@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "network_native",
-    "slug": "network_native",
+    "name": "network_natives",
+    "slug": "network_natives",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
