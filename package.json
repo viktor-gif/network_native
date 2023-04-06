@@ -16,7 +16,9 @@
     "expo": "~48.0.10",
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
+    "react-ionicons": "^4.2.0",
     "react-native": "0.71.6",
+    "react-native-ionicons": "^4.x",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
