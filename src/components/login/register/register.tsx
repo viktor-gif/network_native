@@ -16,7 +16,7 @@ export const Register = (props: PropsType) => {
 
     const sendNewUserData = () => {
         usersAPI.createUser(login, email, password, userName).then(res => {
-            console.log(res.data)
+            props.setLoginOrRegister("login")
         }).catch(err => {
             console.log('Err from createUser: ' + err)
         })
