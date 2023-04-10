@@ -4,6 +4,8 @@ import Icon from "react-native-ionicons"
 // import logo from "../../img/logo.png"
 
 export const Header = () => {
+
+    
     return <View style={styles.container}>
         <View style={styles.logoFraction}>
             <Image

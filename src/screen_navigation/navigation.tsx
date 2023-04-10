@@ -1,20 +1,62 @@
-import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React from 'react';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { Profile } from '../components/profile/profile';
+import { Groops } from '../components/groops/groops';
+import { StyleSheet, Text, View } from 'react-native';
+import { Users } from '../components/users/users';
+import { Chat } from '../components/chat/chat';
+import { Settings } from '../components/settings/settings';
 
 const Stack = createNativeStackNavigator();
 
-const MyStack = () => {
+
+
+export default function MyStack() {
+  console.log('Profile_____: ' + Profile)
+
+  
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {/* <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Welcome'}}
-        /> */}
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Navigator
+      screenOptions={{
+        headerShown: false
+        }}
+        initialRouteName="Profile">
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          // options={{title: 'Profile'}}
+        />
+        <Stack.Screen
+          name="Users"
+          component={Users}
+        />
+        <Stack.Screen
+          name="Groops"
+          component={Groops}
+          // options={{title: 'Groops'}}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+        />
       </Stack.Navigator>
-    </NavigationContainer>
+      
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    // alignItems: 'stretch'
+  },
+  screen: {
+
+  }
+})
+
