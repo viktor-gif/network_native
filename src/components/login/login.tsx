@@ -2,6 +2,7 @@ import { AxiosError } from "axios"
 import { useState } from "react"
 import { Button, StyleSheet, Text, TextInput, View } from "react-native"
 import { loginAPI } from "../../api/login"
+import { Register } from "./register/register"
 
 type PropsType = {
     setAuth: (isAuth: boolean) => void
@@ -10,6 +11,7 @@ type PropsType = {
 export const Login = (props: PropsType) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loginOrRegister, setLoginOrRegister] = useState<'login' | 'register'>('login')
 
     const sendLoginData = () => {
         
@@ -21,23 +23,31 @@ export const Login = (props: PropsType) => {
     }
 
     return <View style={styles.container}>
-        <View>
-            <TextInput
-                value={email}
-                onChangeText={(text) => setEmail(text)}
-                keyboardType="email-address"
-                placeholder="Введіть e-mail"
-                style={styles.inputText}
-            />
-            <TextInput
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-                keyboardType="default"
-                placeholder="Введіть пароль"
-                style={styles.inputText}
-            />
-            <Button title="Ввійти" onPress={sendLoginData} />
-        </View>
+        {loginOrRegister === 'login'
+            
+            ? <View>
+                <TextInput
+                    value={email}
+                    onChangeText={(text) => setEmail(text)}
+                    keyboardType="email-address"
+                    placeholder="Введіть e-mail"
+                    style={styles.inputText}
+                />
+                <TextInput
+                    value={password}
+                    onChangeText={(text) => setPassword(text)}
+                    keyboardType="default"
+                    placeholder="Введіть пароль"
+                    style={styles.inputText}
+                />
+                <Button title="Ввійти" onPress={sendLoginData} />
+                <Text>Або</Text>
+                <Button title="Зареєструватись" onPress={() => setLoginOrRegister('register')} />
+            </View>
+            
+            : <Register setAuth={props.setAuth} setLoginOrRegister={setLoginOrRegister} />
+
+        }
     </View>
 }
 
