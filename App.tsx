@@ -6,31 +6,53 @@ import { getUsers } from './src/api/api';
 import { Header } from './src/components/header/header';
 import MainStack from './src/screen_navigation/navigation'
 import {NavigationContainer} from '@react-navigation/native';
+import { loginAPI } from './src/api/login';
+import { Login } from './src/components/login/login';
 
 export default function App() {
-  const [users, setUsers] = useState<any>(null)
-  console.log( `Usseess______ffff ${users}`)
+  const [isAuth, setAuth] = useState<any>(false)
+  console.log("isAuth: " + isAuth)
 
   useEffect(() => {
-    // getUsers().then(users => setUsers(users.data))
+    
+      loginAPI.me().then((res) => {
+        if (res.data) {
+          setAuth(true)
+        }
+      }).catch(err => {
+        console.log('_______err_________')
+        if (err) {
+          console.log('ERRPR')
+        }
+      
+      })
+    
+      
+    
+
   }, [])
 
   
 
   return (
     <View style={styles.container}>
-      <NavigationContainer>
+      {isAuth
+      ? <NavigationContainer>
           <View style={styles.header}>
-            <Header />
+            <Header setAuth={setAuth} />
           </View>
           
 
           <View style={styles.main}>
           <Text>                                                                                                                                                     </Text>
-            <MainStack />
+            <MainStack setAuth={setAuth} />
           </View>
           <StatusBar style="auto" />
-      </NavigationContainer>
+        </NavigationContainer>
+
+        : <Login setAuth={setAuth} />
+
+        }
     </View>
   );
 }

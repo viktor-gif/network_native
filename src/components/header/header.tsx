@@ -3,7 +3,11 @@ import { Nav } from "./nav/nav"
 import Icon from "react-native-ionicons"
 // import logo from "../../img/logo.png"
 
-export const Header = () => {
+type PropsType = {
+    setAuth: (isAuth: boolean) => void
+}
+
+export const Header = (props: PropsType) => {
 
     
     return <View style={styles.container}>
@@ -27,7 +31,7 @@ export const Header = () => {
                 </View>
             </View>
         </View>
-        <Nav />
+        <Nav setAuth={props.setAuth} />
     </View>
 }
 

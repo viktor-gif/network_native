@@ -9,11 +9,13 @@ import { Users } from '../components/users/users';
 import { Chat } from '../components/chat/chat';
 import { Settings } from '../components/settings/settings';
 
+type PropsType = {
+    setAuth: (isAuth: boolean) => void
+}
+
 const Stack = createNativeStackNavigator();
 
-
-
-export default function MyStack() {
+export default function MyStack(props: PropsType) {
   console.log('Profile_____: ' + Profile)
 
   
@@ -45,6 +47,7 @@ export default function MyStack() {
         <Stack.Screen
           name="Settings"
           component={Settings}
+          initialParams={{setAuth: props.setAuth}}
         />
       </Stack.Navigator>
       

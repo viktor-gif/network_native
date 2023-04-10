@@ -1,12 +1,16 @@
 import { useNavigation } from "@react-navigation/native"
 import { View, Text, Image, StyleSheet, Button, TouchableOpacity } from "react-native"
 
-export const Nav = () => {
+type PropsType = {
+    setAuth: (isAuth: boolean) => void
+}
+
+export const Nav = (props: PropsType) => {
 
     const navigation: any = useNavigation()
 
-  const navigateTo = (path: string) => {
-        navigation.navigate(path)
+  const navigateTo = (path: string, setAuth?: (isAuth: boolean) => void) => {
+        navigation.navigate(path, setAuth)
   }
     return <View style={styles.container}>
         <TouchableOpacity onPress={() => navigateTo('Profile')}>
@@ -41,7 +45,7 @@ export const Nav = () => {
                 />
             </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigateTo('Settings')}>
+        <TouchableOpacity onPress={() => navigateTo('Settings', props.setAuth)}>
             <View>
                 <Image
                     style={styles.icon}
