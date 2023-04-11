@@ -1,4 +1,5 @@
-import { StyleSheet, View, Text, Image, Button } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+import { StyleSheet, View, Text, Image, Button, TouchableOpacity } from "react-native"
 import { LocationType, PhotosType } from "../../../ts/users"
 import { getCorrectMediaUrl } from "../../../utils/commonFunctions"
 
@@ -14,21 +15,28 @@ type PropsType = {
 
 export const User = (props: PropsType) => {
     const photoUrl = props.photos.small
+
+    const navigation: any = useNavigation()
+
+    const navigateTo = (path: string, userId: {}) => {
+        navigation.navigate(path, {userId})
+    }
     
     return <View style={styles.container}>
         <View>
-            
-            {photoUrl
-                ? <Image
-                    alt="AWSOME"
-                    style={styles.ava}
-                    source={{ uri: getCorrectMediaUrl(photoUrl) }}
-                />
-                : <Image
-                    style={styles.ava}
-                    source={require('../../../img/ava_male.jpeg')}
-                />
-            }
+            <TouchableOpacity onPress={() => navigateTo('Profile', props.id)}>
+                {photoUrl
+                    ? <Image
+                        alt="AWSOME"
+                        style={styles.ava}
+                        source={{ uri: getCorrectMediaUrl(photoUrl) }}
+                    />
+                    : <Image
+                        style={styles.ava}
+                        source={require('../../../img/ava_male.jpeg')}
+                    />
+                }
+            </TouchableOpacity>
         </View>
         <View style={styles.nameAndButtonsBlock}>
             <View>

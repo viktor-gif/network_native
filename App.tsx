@@ -8,15 +8,18 @@ import MainStack from './src/screen_navigation/navigation'
 import {NavigationContainer} from '@react-navigation/native';
 import { loginAPI } from './src/api/login';
 import { Login } from './src/components/login/login';
+import { AuthDataType } from './src/ts/auth';
 
 export default function App() {
   const [isAuth, setAuth] = useState<any>(false)
+  const [authData, setAuthData] = useState<AuthDataType | null>(null)
   console.log("isAuth: " + isAuth)
 
   useEffect(() => {
     
       loginAPI.me().then((res) => {
         if (res.data) {
+          setAuthData(res.data)
           setAuth(true)
         }
       }).catch(err => {
@@ -26,12 +29,9 @@ export default function App() {
         }
       
       })
-    
-      
-    
-
   }, [])
 
+  console.log('-----auth data______: ' + (authData?.id || null))
   
 
   return (
@@ -45,7 +45,7 @@ export default function App() {
 
           <View style={styles.main}>
           <Text>                                                                                                                                                     </Text>
-            <MainStack setAuth={setAuth} />
+            <MainStack setAuth={setAuth} authId={authData?.id} />
           </View>
           <StatusBar style="auto" />
         </NavigationContainer>

@@ -7,7 +7,6 @@ import { User } from "./user/user"
 
 export const Users = () => {
     const [users, setUsers] = useState<UserType[] | null>(null)
-    console.log(users)
 
     useEffect(() => {
         usersAPI.getUsers().then(res => {

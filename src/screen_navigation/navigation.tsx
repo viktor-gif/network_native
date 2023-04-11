@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer, useLinkProps, useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { Profile } from '../components/profile/profile';
@@ -8,17 +8,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Users } from '../components/users/users';
 import { Chat } from '../components/chat/chat';
 import { Settings } from '../components/settings/settings';
+import { AuthDataType } from '../ts/auth';
 
 type PropsType = {
-    setAuth: (isAuth: boolean) => void
+  setAuth: (isAuth: boolean) => void
+  authId: string | undefined
 }
+
 
 const Stack = createNativeStackNavigator();
 
 export default function MyStack(props: PropsType) {
   console.log('Profile_____: ' + Profile)
 
-  
+  console.log('authId from Mystack: ' + props.authId)
 
   return (
       <Stack.Navigator
@@ -29,6 +32,7 @@ export default function MyStack(props: PropsType) {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          initialParams={{authId: props.authId}}
           // options={{title: 'Profile'}}
         />
         <Stack.Screen
