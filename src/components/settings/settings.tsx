@@ -5,7 +5,7 @@ import { loginAPI } from "../../api/login"
 
 
 export const Settings = (props: any) => {
-    console.log(props.route.params)
+    console.log('props.route.params____________: ' + props.route.params.test)
     const logOut = () => {
         loginAPI.logout().then(res => {
             props.route.params.setAuth(false)

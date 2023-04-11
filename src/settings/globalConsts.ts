@@ -1,0 +1,1 @@
+export const WIFI_API = "192.168.1.7"
