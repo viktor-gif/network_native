@@ -13,8 +13,10 @@ export const Profile = (props: any) => {
     const [isEdit, setEdit] = useState(false)
 
     const userId = props.route.params?.userId || props.route.params?.authId
+
+    const isAuthProfile = (!props.route.params?.userId && props.route.params?.authId) || (props.route.params?.userId === props.route.params?.authId)
     
-    // console.log('props.route.params gg : ' + props.route.params.authProfile._id)
+    console.log('props.route.params gg : ' + props.route.params?.authProfile?._id)
 
     useEffect(() => {
         userId && profileAPI.getProfile(userId).then(res => {
@@ -54,7 +56,7 @@ export const Profile = (props: any) => {
                 <Text>{ props.route.params?.authProfile?.fullName }</Text>
                 <Text>{ props.route.params?.authProfile?.fullName }</Text>
                 <Text>{props.route.params?.authProfile?.fullName}</Text>
-                <Button title="Редагувати" onPress={() => setEdit(true)} />
+                {isAuthProfile && <Button title="Редагувати" onPress={() => setEdit(true)} />}
             </View>
         }
         
