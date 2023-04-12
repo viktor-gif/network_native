@@ -9,10 +9,12 @@ import { Users } from '../components/users/users';
 import { Chat } from '../components/chat/chat';
 import { Settings } from '../components/settings/settings';
 import { AuthDataType } from '../ts/auth';
+import { ProfileDataType } from '../ts/profile';
 
 type PropsType = {
   setAuth: (isAuth: boolean) => void
   authId: string | undefined
+  authProfile: ProfileDataType | null
 }
 
 
@@ -32,7 +34,7 @@ export default function MyStack(props: PropsType) {
         <Stack.Screen
           name="Profile"
           component={Profile}
-          initialParams={{authId: props.authId}}
+          initialParams={{authId: props.authId, authProfile: props.authProfile}}
           // options={{title: 'Profile'}}
         />
         <Stack.Screen

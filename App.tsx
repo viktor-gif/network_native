@@ -9,27 +9,38 @@ import {NavigationContainer} from '@react-navigation/native';
 import { loginAPI } from './src/api/login';
 import { Login } from './src/components/login/login';
 import { AuthDataType } from './src/ts/auth';
+import { ProfileDataType } from './src/ts/profile';
+import { profileAPI } from './src/api/profile';
 
 export default function App() {
   const [isAuth, setAuth] = useState<any>(false)
   const [authData, setAuthData] = useState<AuthDataType | null>(null)
-  console.log("isAuth: " + isAuth)
+  const [authProfile, setAuthProfile] = useState<ProfileDataType | null>(null)
 
   useEffect(() => {
     
-      loginAPI.me().then((res) => {
-        if (res.data) {
-          setAuthData(res.data)
-          setAuth(true)
-        }
-      }).catch(err => {
-        console.log('_______err_________')
-        if (err) {
-          console.log('ERRPR')
-        }
-      
-      })
+    loginAPI.me().then((res) => {
+      if (res.data) {
+        setAuthData(res.data)
+        setAuth(true)
+      }
+    }).catch(err => {
+      console.log('_______err_________')
+      if (err) {
+        console.log('ERRPR')
+      }
+    })
+    
   }, [])
+
+  useEffect(() => {
+    
+    authData && profileAPI.getProfile(authData.id).then(res => {
+      setAuthProfile(res.data)
+    })
+
+  }, [authData?.id])
+
 
   console.log('-----auth data______: ' + (authData?.id || null))
   
@@ -45,7 +56,7 @@ export default function App() {
 
           <View style={styles.main}>
           <Text>                                                                                                                                                     </Text>
-            <MainStack setAuth={setAuth} authId={authData?.id} />
+            <MainStack setAuth={setAuth} authId={authData?.id} authProfile={authProfile} />
           </View>
           <StatusBar style="auto" />
         </NavigationContainer>
