@@ -38,6 +38,7 @@ export const Login = (props: PropsType) => {
                     onChangeText={(text) => setPassword(text)}
                     keyboardType="default"
                     placeholder="Введіть пароль"
+                    secureTextEntry={true}
                     style={styles.inputText}
                 />
                 <Button title="Ввійти" onPress={sendLoginData} />
