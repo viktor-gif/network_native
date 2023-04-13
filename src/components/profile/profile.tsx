@@ -42,7 +42,7 @@ export const Profile = (props: any) => {
         }
 
         {isEdit
-            ? <ProfileForm setEdit={setEdit} />
+            ? <ProfileForm setEdit={setEdit} authProfileData={props.route.params?.authProfile} />
             : <View>
                 <Text>{ profileData?.fullName }</Text>
                 <Text>{ profileData?.aboutMe }</Text>

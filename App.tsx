@@ -39,7 +39,7 @@ export default function App() {
       setAuthProfile(res.data)
     })
 
-  }, [authData?.id])
+  }, [authData])
 
 
   console.log('-----auth data______: ' + (authData?.id || null))
