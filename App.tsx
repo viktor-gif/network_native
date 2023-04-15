@@ -16,18 +16,21 @@ export default function App() {
   const [isAuth, setAuth] = useState<any>(false)
   const [authData, setAuthData] = useState<AuthDataType | null>(null)
   const [authProfile, setAuthProfile] = useState<ProfileDataType | null>(null)
+  const [appError, setAppError] = useState<string | null>(null)
 
   useEffect(() => {
     
     loginAPI.me().then((res) => {
-      if (res.data) {
-        setAuthData(res.data)
+      if (res.data.resultCode === 0) {
+        setAuthData(res.data.data)
         setAuth(true)
+        appError && setAppError(null)
       }
     }).catch(err => {
-      console.log('_______err_________')
-      if (err) {
-        console.log('ERRPR')
+      if (err.response.status === 403) {
+        setAppError(err.response.data.message || 'Ввійдіть, будь ласка, в аккаунт')
+      } else {
+        setAppError('Помилка сервера')
       }
     })
     
@@ -61,7 +64,7 @@ export default function App() {
           <StatusBar style="auto" />
         </NavigationContainer>
 
-        : <Login setAuth={setAuth} />
+        : <Login setAuth={setAuth} appError={appError} />
 
         }
     </View>

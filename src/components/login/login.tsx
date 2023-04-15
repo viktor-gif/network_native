@@ -6,6 +6,7 @@ import { Register } from "./register/register"
 
 type PropsType = {
     setAuth: (isAuth: boolean) => void
+    appError: string | null
 }
 
 export const Login = (props: PropsType) => {
@@ -44,6 +45,7 @@ export const Login = (props: PropsType) => {
                 <Button title="Ввійти" onPress={sendLoginData} />
                 <Text>Або</Text>
                 <Button title="Зареєструватись" onPress={() => setLoginOrRegister('register')} />
+                {props.appError && <Text style={styles.error}>{props.appError}</Text>}
             </View>
             
             : <Register setAuth={props.setAuth} setLoginOrRegister={setLoginOrRegister} />
@@ -63,5 +65,8 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#fafafa',
         width: 300
+    },
+    error: {
+        color: 'red'
     }
 })
