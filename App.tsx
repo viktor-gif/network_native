@@ -18,6 +18,8 @@ export default function App() {
   const [authProfile, setAuthProfile] = useState<ProfileDataType | null>(null)
   const [appError, setAppError] = useState<string | null>(null)
 
+  console.log('AUTHDATA_____---__-_--- ' + authData?.id)
+
   useEffect(() => {
     
     loginAPI.me().then((res) => {
@@ -64,7 +66,7 @@ export default function App() {
           <StatusBar style="auto" />
         </NavigationContainer>
 
-        : <Login setAuth={setAuth} appError={appError} />
+        : <Login setAuth={setAuth} appError={appError} setAppError={setAppError} />
 
         }
     </View>

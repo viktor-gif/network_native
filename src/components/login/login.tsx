@@ -5,8 +5,10 @@ import { loginAPI } from "../../api/login"
 import { Register } from "./register/register"
 
 type PropsType = {
-    setAuth: (isAuth: boolean) => void
     appError: string | null
+
+    setAuth: (isAuth: boolean) => void
+    setAppError: (error: string | null) => void
 }
 
 export const Login = (props: PropsType) => {
@@ -17,9 +19,19 @@ export const Login = (props: PropsType) => {
     const sendLoginData = () => {
         
         loginAPI.login(email, password).then((res) => {
-            props.setAuth(true)
+            console.log('res.data.resultCode : ' + res.data.resultCode)
+            if (res.data.resultCode === 0) {
+                props.setAuth(true)
+                props.appError && props.setAppError(null)
+            }
+            
         }).catch(err => {
-            console.log('Errrrrrrrrrrrrrrrrr: ' + err)
+            if (err.response.status === 404) {
+                props.setAppError(err.response.data.message || 'Пароль або e-mail не вірний')
+            } else {
+                props.setAppError('Помилка сервера')
+      }
+            
         })
     }
 
