@@ -36,7 +36,7 @@ export default function App() {
       }
     })
     
-  }, [])
+  }, [isAuth])
 
   useEffect(() => {
     
@@ -44,7 +44,7 @@ export default function App() {
       setAuthProfile(res.data)
     })
 
-  }, [authData])
+  }, [isAuth])
 
 
   console.log('-----auth data______: ' + (authData?.id || null))
@@ -61,7 +61,9 @@ export default function App() {
 
           <View style={styles.main}>
           <Text>                                                                                                                                                     </Text>
-            <MainStack setAuth={setAuth} authId={authData?.id} authProfile={authProfile} />
+            <MainStack setAuth={setAuth} authId={authData?.id} authProfile={authProfile}
+              setAuthData={setAuthData} setAuthProfile={setAuthProfile}
+              appError={appError} setAppError={setAppError} />
           </View>
           <StatusBar style="auto" />
         </NavigationContainer>

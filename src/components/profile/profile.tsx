@@ -6,17 +6,26 @@ import { ProfileDataType } from "../../ts/profile"
 import { getCorrectMediaUrl } from "../../utils/commonFunctions"
 import { ProfileForm } from "./profileForm"
 
+// type PropsType = {
+//     authId: string | undefined
+//     authProfile: ProfileDataType | null
+// }
 
 export const Profile = (props: any) => {
     const [profileData, setProfileData] = useState<ProfileDataType | null>(null)
     const [status, setStatus] = useState<string | null>(null)
     const [isEdit, setEdit] = useState(false)
 
-    const userId = props.route.params?.userId || props.route.params?.authId
+    // @ts-ignore
+    console.log('test +++++++++ ' + JSON.stringify(props))
 
-    const isAuthProfile = (!props.route.params?.userId && props.route.params?.authId) || (props.route.params?.userId === props.route.params?.authId)
+    // @ts-ignore
+    const userId = props.route?.params?.userId || props.route?.params?.authId
+
+    // @ts-ignore
+    const isAuthProfile = (!props.route?.params?.userId && props.route?.params?.authId) || (props.route?.params?.userId === props.route?.params?.authId)
     
-    console.log('props.route.params gg : ' + props.route.params?.authProfile?._id)
+    console.log('props.route.params gg : ' + props.route?.params?.authProfile?._id)
 
     useEffect(() => {
         userId && profileAPI.getProfile(userId).then(res => {
@@ -25,7 +34,8 @@ export const Profile = (props: any) => {
         userId && profileAPI.getStatus(userId).then(res => {
             setStatus(res.data.status)
         })
-    }, [props.route.params?.userId])
+        // @ts-ignore
+    }, [props.route?.params?.userId, props.route?.params?.authId])
 
     return <View style={styles.container}>
         <Text>{status ? status : '------------'}</Text>
@@ -42,7 +52,7 @@ export const Profile = (props: any) => {
         }
 
         {isEdit
-            ? <ProfileForm setEdit={setEdit} authProfileData={props.route.params?.authProfile} />
+            ? <ProfileForm setEdit={setEdit} authProfileData={props.route?.params?.authProfile} />
             : <View>
                 <Text>{ profileData?.fullName }</Text>
                 <Text>{ profileData?.aboutMe }</Text>
