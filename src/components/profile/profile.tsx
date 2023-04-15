@@ -51,11 +51,14 @@ export const Profile = (props: any) => {
                 <Text>{ profileData?.location.country }</Text>
                 <Text>{profileData?.location.city}</Text>
 
-                <Text>{ props.route.params?.authProfile?.fullName }</Text>
-                <Text>{ props.route.params?.authProfile?.fullName }</Text>
-                <Text>{ props.route.params?.authProfile?.fullName }</Text>
-                <Text>{ props.route.params?.authProfile?.fullName }</Text>
-                <Text>{props.route.params?.authProfile?.fullName}</Text>
+                <Text>Контакти:</Text>
+                <Text>{ profileData?.contacts.github }</Text>
+                <Text>{ profileData?.contacts.facebook }</Text>
+                <Text>{ profileData?.contacts.instagram }</Text>
+                <Text>{ profileData?.contacts.twitter }</Text>
+                <Text>{ profileData?.contacts.website }</Text>
+                <Text>{ profileData?.contacts.youtube }</Text>
+                <Text>{ profileData?.contacts.linkedin }</Text>
                 {isAuthProfile && <Button title="Редагувати" onPress={() => setEdit(true)} />}
             </View>
         }
