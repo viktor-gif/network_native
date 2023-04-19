@@ -18,7 +18,7 @@ export const User = (props: PropsType) => {
 
     const navigation: any = useNavigation()
 
-    const navigateTo = (path: string, userId: {}) => {
+    const navigateTo = (path: string, userId: string) => {
         navigation.navigate(path, {userId})
     }
     

@@ -1,35 +1,24 @@
-import { AxiosError } from "axios"
+
 import { useState } from "react"
 import { Button, StyleSheet, Text, TextInput, View } from "react-native"
-import { usersAPI } from "../../../api/users"
 
 type PropsType = {
-    setAuth: (isAuth: boolean) => void
-    setLoginOrRegister: (loginOrRegister: "login" | "register") => void
+    usersError: string | null
+
+    createUser: (email: string, password: string, userName: string) => void
+    setLoginOrRegister: (loginOrRegister: 'login' | 'register') => void
 }
 
 export const Register = (props: PropsType) => {
-    const [login, setLogin] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [userName, setUserName] = useState('')
 
     const sendNewUserData = () => {
-        usersAPI.createUser(login, email, password, userName).then(res => {
-            props.setLoginOrRegister("login")
-        }).catch(err => {
-            console.log('Err from createUser: ' + err)
-        })
+        props.createUser(email, password, userName)
     }
     return <View style={styles.container}>
         <View>
-            <TextInput
-                value={login}
-                onChangeText={(text) => setLogin(text)}
-                keyboardType="default"
-                placeholder="Введіть логін"
-                style={styles.inputText}
-            />
             <TextInput
                 value={email}
                 onChangeText={(text) => setEmail(text)}

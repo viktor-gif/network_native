@@ -1,38 +1,29 @@
 import { AxiosError } from "axios"
 import { useState } from "react"
 import { Button, StyleSheet, Text, TextInput, View } from "react-native"
-import { loginAPI } from "../../api/login"
+import { connect } from "react-redux"
+import { authAPI } from "../../api/auth"
+import { AppStateType } from "../../redux/redux-store"
 import { Register } from "./register/register"
+import { login } from "../../redux/authReducer"
+import { createUser } from "../../redux/usersReducer"
 
 type PropsType = {
-    appError: string | null
+    loginError: string | null
+    usersError: string | null
 
-    setAuth: (isAuth: boolean) => void
-    setAppError: (error: string | null) => void
+    createUser: (email: string, password: string, userName: string) => void
+    login: (email: string, password: string) => void
 }
 
-export const Login = (props: PropsType) => {
+const Login = (props: PropsType) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loginOrRegister, setLoginOrRegister] = useState<'login' | 'register'>('login')
 
     const sendLoginData = () => {
         
-        loginAPI.login(email, password).then((res) => {
-            console.log('res.data.resultCode : ' + res.data.resultCode)
-            if (res.data.resultCode === 0) {
-                props.setAuth(true)
-                props.appError && props.setAppError(null)
-            }
-            
-        }).catch(err => {
-            if (err.response.status === 404) {
-                props.setAppError(err.response.data.message || 'Пароль або e-mail не вірний')
-            } else {
-                props.setAppError('Помилка сервера')
-      }
-            
-        })
+        props.login(email, password)
     }
 
     return <View style={styles.container}>
@@ -57,10 +48,11 @@ export const Login = (props: PropsType) => {
                 <Button title="Ввійти" onPress={sendLoginData} />
                 <Text>Або</Text>
                 <Button title="Зареєструватись" onPress={() => setLoginOrRegister('register')} />
-                {props.appError && <Text style={styles.error}>{props.appError}</Text>}
+                {props.loginError && <Text style={styles.error}>{props.loginError}</Text>}
             </View>
             
-            : <Register setAuth={props.setAuth} setLoginOrRegister={setLoginOrRegister} />
+            : <Register setLoginOrRegister={setLoginOrRegister}
+                usersError={props.usersError} createUser={props.createUser} />
 
         }
     </View>
@@ -82,3 +74,12 @@ const styles = StyleSheet.create({
         color: 'red'
     }
 })
+
+const mapStateToProps = (state: AppStateType) => ({
+    loginError: state.auth.loginError,
+    usersError: state.usersPage.usersError
+})
+
+export default connect(mapStateToProps, {
+    login, createUser
+})(Login)

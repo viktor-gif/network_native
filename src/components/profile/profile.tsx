@@ -1,44 +1,47 @@
-
 import { useEffect, useState } from "react"
 import { View, Text, StyleSheet, Image, Button, TextInput } from "react-native"
-import { profileAPI } from "../../api/profile"
+import { connect } from "react-redux"
+import { getProfile, getStatus } from "../../redux/profileReducer"
+import { AppStateType } from "../../redux/redux-store"
 import { ProfileDataType } from "../../ts/profile"
 import { getCorrectMediaUrl } from "../../utils/commonFunctions"
 import { ProfileForm } from "./profileForm"
 
-// type PropsType = {
-//     authId: string | undefined
-//     authProfile: ProfileDataType | null
-// }
+type PropsType = {
+    authId: string | undefined
+    authProfile: ProfileDataType | null
+    profileData: ProfileDataType | null
+    userStatus: string | null
 
-export const Profile = (props: any) => {
-    const [profileData, setProfileData] = useState<ProfileDataType | null>(null)
-    const [status, setStatus] = useState<string | null>(null)
+    getProfile: (userId: string) => void
+    getStatus: (userId: string) => void
+    route: any
+}
+
+export const Profile = (props: PropsType) => {
     const [isEdit, setEdit] = useState(false)
 
-    // @ts-ignore
-    console.log('test +++++++++ ' + JSON.stringify(props))
+    console.log('test +++++++++ ' + props.route?.params?.userId)
 
-    // @ts-ignore
-    const userId = props.route?.params?.userId || props.route?.params?.authId
+    const userId = props.route?.params?.userId
+    const authId = props.authId
 
-    // @ts-ignore
-    const isAuthProfile = (!props.route?.params?.userId && props.route?.params?.authId) || (props.route?.params?.userId === props.route?.params?.authId)
-    
-    console.log('props.route.params gg : ' + props.route?.params?.authProfile?._id)
+    const profileData = props.profileData
+    const authProfileData = props.authProfile
+
+    const isAuthProfile = (!userId && authId) || (userId === authId)
+
+    console.log('props.route.params gg : ' + props.route?.params?.userId)
 
     useEffect(() => {
-        userId && profileAPI.getProfile(userId).then(res => {
-            setProfileData(res.data)
-        })
-        userId && profileAPI.getStatus(userId).then(res => {
-            setStatus(res.data.status)
-        })
-        // @ts-ignore
+        userId && props.getStatus(userId)
+        authId && props.getStatus(authId)
+        userId && props.getProfile(userId)
+        
     }, [props.route?.params?.userId, props.route?.params?.authId])
 
     return <View style={styles.container}>
-        <Text>{status ? status : '------------'}</Text>
+        <Text>{props.userStatus ? props.userStatus : '------------'}</Text>
         {profileData?.photos.small
             ? <Image
                 alt="AWSOME"
@@ -54,21 +57,21 @@ export const Profile = (props: any) => {
         {isEdit
             ? <ProfileForm setEdit={setEdit} authProfileData={props.route?.params?.authProfile} />
             : <View>
-                <Text>{ profileData?.fullName }</Text>
-                <Text>{ profileData?.aboutMe }</Text>
-                <Text>{ profileData?.lookingForAJob ? 'Так' : 'Ні' }</Text>
-                {profileData?.lookingForAJob && <Text>{profileData?.lookingForAJobDescription}</Text>}
-                <Text>{ profileData?.location.country }</Text>
-                <Text>{profileData?.location.city}</Text>
+                <Text>{ profileData?.fullName || authProfileData?.fullName }</Text>
+                <Text>{ profileData?.aboutMe || authProfileData?.aboutMe }</Text>
+                <Text>{ (profileData?.lookingForAJob || authProfileData?.lookingForAJob) ? 'Так' : 'Ні' }</Text>
+                {(profileData?.lookingForAJob || authProfileData?.lookingForAJob) && <Text>{profileData?.lookingForAJobDescription || authProfileData?.lookingForAJobDescription}</Text>}
+                <Text>{ profileData?.location.country || authProfileData?.location.country }</Text>
+                <Text>{profileData?.location.city || authProfileData?.location.city}</Text>
 
                 <Text>Контакти:</Text>
-                <Text>{ profileData?.contacts.github }</Text>
-                <Text>{ profileData?.contacts.facebook }</Text>
-                <Text>{ profileData?.contacts.instagram }</Text>
-                <Text>{ profileData?.contacts.twitter }</Text>
-                <Text>{ profileData?.contacts.website }</Text>
-                <Text>{ profileData?.contacts.youtube }</Text>
-                <Text>{ profileData?.contacts.linkedin }</Text>
+                <Text>{ profileData?.contacts.github || authProfileData?.contacts.github }</Text>
+                <Text>{ profileData?.contacts.facebook || authProfileData?.contacts.facebook }</Text>
+                <Text>{ profileData?.contacts.instagram || authProfileData?.contacts.instagram }</Text>
+                <Text>{ profileData?.contacts.twitter || authProfileData?.contacts.twitter }</Text>
+                <Text>{ profileData?.contacts.website || authProfileData?.contacts.website }</Text>
+                <Text>{ profileData?.contacts.youtube || authProfileData?.contacts.youtube }</Text>
+                <Text>{ profileData?.contacts.linkedin || authProfileData?.contacts.linkedin }</Text>
                 {isAuthProfile && <Button title="Редагувати" onPress={() => setEdit(true)} />}
             </View>
         }
@@ -90,3 +93,13 @@ const styles = StyleSheet.create({
         height: 200
     }
 })
+
+const mapStateToProps = (state: AppStateType) => ({
+    authId: state.auth.authData?.id,
+    profileData: state.profilePage.profileData,
+    userStatus: state.profilePage.status
+})
+
+export default connect(mapStateToProps, {
+  getProfile, getStatus
+})(Profile);

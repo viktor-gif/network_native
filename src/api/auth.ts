@@ -2,7 +2,7 @@ import axios from "axios"
 import { axiosCreate } from "./api"
 
 
-export const loginAPI = {
+export const authAPI = {
 
      me() {
         return axiosCreate.get(`/auth/me`)
