@@ -41,6 +41,7 @@ export const Register = (props: PropsType) => {
                 placeholder="Введіть повне ім'я"
                 style={styles.inputText}
             />
+            {props.usersError && <Text style={styles.error}>{ props.usersError }</Text>}
             <Button title="Зареєструватись" onPress={sendNewUserData} />
             <Text>Або</Text>
             <Button title="Ввійти" onPress={() => props.setLoginOrRegister('login')} />
@@ -59,5 +60,8 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: '#fafafa',
         width: 300
+    },
+    error: {
+        color: 'red'
     }
 })

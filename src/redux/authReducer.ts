@@ -70,7 +70,6 @@ export const authMe = () => async (dispatch: DispatchType) => {
             dispatch(authActions.setLoginError(null))
         }
     } catch (err: any) {
-        console.log('JSON.stringify ' + JSON.stringify(err.response.data))
         if (err?.response?.status === 403) {
             dispatch(authActions.setLoginError(err.response.data.message || 'Ввійдіть, будь ласка, в аккаунт'))
         } else if (JSON.stringify(err.message) === '"Network Error"') {

@@ -60,6 +60,7 @@ export const getUsers = (pageSize: number, currentPage: number, term: string, fr
 }
 export const createUser = (email: string, password: string, fullName: string) =>  async (dispatch: DispatchType) => {
     try {
+        
         const res = await usersAPI.createUser(email, password, fullName)
 
         if (res.data.resultCode === 0) {
