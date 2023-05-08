@@ -9,5 +9,11 @@ export const usersAPI = {
     },
     createUser(email: string, password: string, fullName: string) {
         return axiosCreate.post(`/users/add?email=${email}&password=${password}&fullName=${fullName}`)
+    },
+    deleteUser() {
+        return axiosCreate.delete(`/users/delete`)
+    },
+    restoreUser() {
+        return axiosCreate.put(`/users/restore`)
     }
 }

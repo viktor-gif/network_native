@@ -14,6 +14,7 @@ import { profileAPI } from './src/api/profile';
 import { authMe } from './src/redux/authReducer';
 import { connect } from 'react-redux';
 import { AppStateType } from './src/redux/redux-store';
+import { restoreUser } from './src/redux/usersReducer'
 
 type PropsType = {
   isAuth: boolean
@@ -21,6 +22,7 @@ type PropsType = {
   authProfileData: ProfileDataType | null
 
   authMe: () => void
+  restoreUser: () => void
 }
 
 function Main(props: any) {
@@ -44,6 +46,14 @@ function Main(props: any) {
     
   }, [props.isAuth])
 
+  // if (props.authData?.blockedAccaunt) {
+  //   return <Text>BLOCKED</Text>
+  // }
+
+  const restoreUser = () => {
+    props.restoreUser()
+  }
+
   return (
     <View style={styles.container}>
       {props.isAuth
@@ -54,8 +64,15 @@ function Main(props: any) {
           
 
           <View style={styles.main}>
-          <Text>                                                                                                                                                     </Text>
-            <MainStack  />
+            <Text>                                                                                                                                                     </Text>
+            {props.authData?.blockedAccaunt
+              ? <View>
+                  <Text>BLOCKED</Text>
+                  <Button title='Відновити сторінку' onPress={restoreUser} />
+                </View>
+              : <MainStack  />
+            }
+            
           </View>
           <StatusBar style="auto" />
         </NavigationContainer>
@@ -103,5 +120,6 @@ const mapStateToProps = (state: AppStateType) => ({
 
 export default connect(mapStateToProps, {
   //getAuthData: authActions.setAuthData
-  authMe
+  authMe,
+  restoreUser
 })(Main);
