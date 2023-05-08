@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         paddingRight: 20,
-        paddingLeft: 20
+        paddingLeft: 20,
+        marginBottom: 100
     },
     ava: {
         width: 200,

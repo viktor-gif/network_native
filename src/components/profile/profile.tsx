@@ -21,7 +21,7 @@ type PropsType = {
 export const Profile = (props: PropsType) => {
     const [isEdit, setEdit] = useState(false)
 
-    console.log('test +++++++++ ' + props.route?.params?.userId)
+    
 
     const userId = props.route?.params?.userId
     const authId = props.authId
@@ -29,16 +29,32 @@ export const Profile = (props: PropsType) => {
     const profileData = props.profileData
     const authProfileData = props.authProfile
 
-    const isAuthProfile = (!userId && authId) || (userId === authId)
+    const isAuthProfile = !userId || (userId === authId)
 
-    console.log('props.route.params gg : ' + props.route?.params?.userId)
+    console.log('isAuthProfile +++++++++ ' + props.authProfile)
 
     useEffect(() => {
         userId && props.getStatus(userId)
         authId && props.getStatus(authId)
+
         userId && props.getProfile(userId)
         
-    }, [props.route?.params?.userId, props.route?.params?.authId])
+    }, [isAuthProfile, userId])
+
+    const getProfileData = (userData: string | null | undefined, authData: string | null | undefined) => {
+        return !isAuthProfile ? userData : authData
+    }
+
+    const isLookingForAJob = !isAuthProfile ? profileData?.lookingForAJob : authProfileData?.lookingForAJob
+    const getLookingForAJob = () => {
+        return isLookingForAJob ? "Так" : "Ні"
+    }
+    const getLookingForAJobDescription = () => {
+        if (isLookingForAJob) {
+            return !isAuthProfile ? <Text>{profileData?.lookingForAJobDescription}</Text> : <Text>{authProfileData?.lookingForAJobDescription}</Text>
+        }
+        
+    }
 
     return <View style={styles.container}>
         <Text>{props.userStatus ? props.userStatus : '------------'}</Text>
@@ -57,21 +73,21 @@ export const Profile = (props: PropsType) => {
         {isEdit
             ? <ProfileForm setEdit={setEdit} authProfileData={props.route?.params?.authProfile} />
             : <View>
-                <Text>{ profileData?.fullName || authProfileData?.fullName }</Text>
-                <Text>{ profileData?.aboutMe || authProfileData?.aboutMe }</Text>
-                <Text>{ (profileData?.lookingForAJob || authProfileData?.lookingForAJob) ? 'Так' : 'Ні' }</Text>
-                {(profileData?.lookingForAJob || authProfileData?.lookingForAJob) && <Text>{profileData?.lookingForAJobDescription || authProfileData?.lookingForAJobDescription}</Text>}
-                <Text>{ profileData?.location.country || authProfileData?.location.country }</Text>
-                <Text>{profileData?.location.city || authProfileData?.location.city}</Text>
+                <Text>{ getProfileData(profileData?.fullName, authProfileData?.fullName) }</Text>
+                <Text>{ getProfileData(profileData?.aboutMe, authProfileData?.aboutMe) }</Text>
+                <Text>{ getLookingForAJob() }</Text>
+                {getLookingForAJobDescription()}
+                <Text>{ getProfileData(profileData?.location.country, authProfileData?.location.country) }</Text>
+                <Text>{getProfileData(profileData?.location.city, authProfileData?.location.city)}</Text>
 
                 <Text>Контакти:</Text>
-                <Text>{ profileData?.contacts.github || authProfileData?.contacts.github }</Text>
-                <Text>{ profileData?.contacts.facebook || authProfileData?.contacts.facebook }</Text>
-                <Text>{ profileData?.contacts.instagram || authProfileData?.contacts.instagram }</Text>
-                <Text>{ profileData?.contacts.twitter || authProfileData?.contacts.twitter }</Text>
-                <Text>{ profileData?.contacts.website || authProfileData?.contacts.website }</Text>
-                <Text>{ profileData?.contacts.youtube || authProfileData?.contacts.youtube }</Text>
-                <Text>{ profileData?.contacts.linkedin || authProfileData?.contacts.linkedin }</Text>
+                <Text>{ getProfileData(profileData?.contacts.github, authProfileData?.contacts.github) }</Text>
+                <Text>{ getProfileData(profileData?.contacts.facebook, authProfileData?.contacts.facebook) }</Text>
+                <Text>{ getProfileData(profileData?.contacts.instagram, authProfileData?.contacts.instagram) }</Text>
+                <Text>{ getProfileData(profileData?.contacts.twitter, authProfileData?.contacts.twitter) }</Text>
+                <Text>{ getProfileData(profileData?.contacts.website, authProfileData?.contacts.website) }</Text>
+                <Text>{ getProfileData(profileData?.contacts.youtube, authProfileData?.contacts.youtube) }</Text>
+                <Text>{ getProfileData(profileData?.contacts.linkedin, authProfileData?.contacts.linkedin) }</Text>
                 {isAuthProfile && <Button title="Редагувати" onPress={() => setEdit(true)} />}
             </View>
         }
@@ -97,7 +113,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state: AppStateType) => ({
     authId: state.auth.authData?.id,
     profileData: state.profilePage.profileData,
-    userStatus: state.profilePage.status
+    userStatus: state.profilePage.status,
+    authProfile: state.auth.authProfileData
 })
 
 export default connect(mapStateToProps, {
