@@ -34,10 +34,14 @@ export const Profile = (props: PropsType) => {
     console.log('isAuthProfile +++++++++ ' + props.authProfile)
 
     useEffect(() => {
-        userId && props.getStatus(userId)
-        authId && props.getStatus(authId)
+        if (isAuthProfile) {
+            authId && props.getStatus(authId)
+        } else {
+            userId && props.getStatus(userId)
 
-        userId && props.getProfile(userId)
+            userId && props.getProfile(userId)
+        }
+        
         
     }, [isAuthProfile, userId])
 
@@ -56,13 +60,15 @@ export const Profile = (props: PropsType) => {
         
     }
 
+    const imgUrl = isAuthProfile ? authProfileData?.photos.small : profileData?.photos.small
+
     return <View style={styles.container}>
         <Text>{props.userStatus ? props.userStatus : '------------'}</Text>
-        {profileData?.photos.small
+        {(imgUrl)
             ? <Image
                 alt="AWSOME"
                 style={styles.ava}
-                source={{ uri: getCorrectMediaUrl(profileData?.photos.small) }}
+                source={{ uri: getCorrectMediaUrl(imgUrl) }}
             />
             : <Image
                 style={styles.ava}
