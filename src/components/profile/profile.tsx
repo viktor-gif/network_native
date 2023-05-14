@@ -31,8 +31,6 @@ export const Profile = (props: PropsType) => {
 
     const isAuthProfile = !userId || (userId === authId)
 
-    console.log('isAuthProfile +++++++++ ' + props.authProfile)
-
     useEffect(() => {
         if (isAuthProfile) {
             authId && props.getStatus(authId)

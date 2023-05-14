@@ -4,7 +4,6 @@ import Main from './main';
 
 export default function App() {
   // @ts-ignor
-  console.log(JSON.stringify(store.getState()))
   return <Provider store={store}>
     <Main />
   </Provider>

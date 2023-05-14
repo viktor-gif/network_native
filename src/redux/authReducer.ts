@@ -66,7 +66,7 @@ export const authMe = () => async (dispatch: DispatchType) => {
     
         if (resultCode === 0) {
             const resAuthProfile = await profileAPI.getProfile(data.id)
-            dispatch(authActions.setAuthData(data, resAuthProfile.data, true))
+            dispatch(authActions.setAuthData(data, resAuthProfile.data.data, true))
             dispatch(authActions.setLoginError(null))
         }
     } catch (err: any) {
