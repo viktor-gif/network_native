@@ -1,0 +1,15 @@
+type UpdateProfileDataType = {
+    fullName: string,
+    aboutMe: string | null,
+    lookForAJob: boolean,
+    lookingForAJobDescription: string | null,
+    country: string | null,
+    city: string | null,
+    github: string | null,
+    facebook: string | null,
+    instagram: string | null,
+    twitter: string | null,
+    website: string | null,
+    youtube: string | null,
+    linkedin: string | null,
+}

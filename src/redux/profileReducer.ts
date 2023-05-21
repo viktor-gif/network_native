@@ -4,6 +4,7 @@ import { profileAPI } from "../api/profile"
 import { PostType } from "../ts/posts"
 import { ProfileDataType } from "../ts/profile"
 import { InferActionsTypes } from "./redux-store"
+import { authMe } from "./authReducer"
 
 const SET_PROFILE_DATA = 'Viktor-gif/profile/SET_PROFILE_DATA'
 const SET_STATUS = 'Viktor-gif/profile/SET_STATUS'
@@ -130,11 +131,14 @@ export const updatePhoto = (photoFile: any, userId: string) => async (dispatch: 
         }
     }
 }
-export const updateProfile = (data: ProfileDataType) => async (dispatch: DispatchType) => {
+export const updateProfile = (data: UpdateProfileDataType, userId: string) => async (dispatch: DispatchType) => {
     try {
         const res = await profileAPI.updateProfile(data)
         if (res.data.resultCode === 0) {
-            console.log('cool updated profile')
+            // @ts-ignore
+            dispatch(authMe())
+            // @ts-ignore
+            dispatch(getProfile(userId))
             dispatch(profileActions.setProfileError(null))
         }
     } catch (err: any) {

@@ -6,7 +6,7 @@ export const profileAPI = {
     getProfile(userId: string) {
         return axiosCreate.get(`/profile/${userId}`)
     },
-    updateProfile(data: ProfileDataType) {
+    updateProfile(data: UpdateProfileDataType) {
         return axiosCreate.put(`/profile`, {data})
     },
     getStatus(userId: string) {

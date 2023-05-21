@@ -5,35 +5,46 @@ import { View, StyleSheet, TextInput, Button, Text, ScrollView } from "react-nat
 import { ProfileDataType } from "../../ts/profile"
 
 type PropsType = {
-    setEdit: (isedit: boolean) => void
     authProfileData: ProfileDataType | null
+
+    updateProfile: (data: UpdateProfileDataType, userId: string) => void
+    setEdit: (isedit: boolean) => void
 }
 
 export const ProfileForm = (props: PropsType) => {
 
-    const [fullname, setFullName] = useState(props.authProfileData?.fullName)
-    const [aboutMe, setAboutMe] = useState(props.authProfileData?.aboutMe)
-    const [lookForAJob, setLookForAJob] = useState(props.authProfileData?.lookingForAJob)
-    const [lookingForAJobDescription, setLookingForAJobDescription] = useState(props.authProfileData?.lookingForAJobDescription)
-    const [country, setCountry] = useState(props.authProfileData?.location?.country)
-    const [city, setCity] = useState(props.authProfileData?.location?.city)
-    const [github, setGithub] = useState(props.authProfileData?.contacts?.github)
-    const [facebook, setFacebook] = useState(props.authProfileData?.contacts?.facebook)
-    const [instagram, setInstagram] = useState(props.authProfileData?.contacts?.instagram)
-    const [twitter, setTwitter] = useState(props.authProfileData?.contacts?.twitter)
-    const [website, setWebsite] = useState(props.authProfileData?.contacts?.website)
-    const [youtube, setYoutube] = useState(props.authProfileData?.contacts?.youtube)
-    const [linkedin, setLinkedin] = useState(props.authProfileData?.contacts?.linkedin)
+    const [fullName, setFullName] = useState(props.authProfileData?.fullName || "")
+    const [aboutMe, setAboutMe] = useState(props.authProfileData?.aboutMe || null)
+    const [lookForAJob, setLookForAJob] = useState(props.authProfileData?.lookingForAJob || false)
+    const [lookingForAJobDescription, setLookingForAJobDescription] = useState(props.authProfileData?.lookingForAJobDescription || null)
+    const [country, setCountry] = useState(props.authProfileData?.location?.country || null)
+    const [city, setCity] = useState(props.authProfileData?.location?.city || null)
+    const [github, setGithub] = useState(props.authProfileData?.contacts?.github || null)
+    const [facebook, setFacebook] = useState(props.authProfileData?.contacts?.facebook || null)
+    const [instagram, setInstagram] = useState(props.authProfileData?.contacts?.instagram || null)
+    const [twitter, setTwitter] = useState(props.authProfileData?.contacts?.twitter || null)
+    const [website, setWebsite] = useState(props.authProfileData?.contacts?.website || null)
+    const [youtube, setYoutube] = useState(props.authProfileData?.contacts?.youtube || null)
+    const [linkedin, setLinkedin] = useState(props.authProfileData?.contacts?.linkedin || null)
 
     useEffect(() => {
 
     }, [props.authProfileData])
 
-    console.log('props.authProfileData_______: ' + props.authProfileData?.fullName)
+    const updateProfile = () => {
+        props.authProfileData
+            && props.updateProfile({
+                fullName, aboutMe, lookForAJob,
+                lookingForAJobDescription, country,
+                city, github, facebook, instagram,
+                twitter, website, youtube, linkedin
+            }, props.authProfileData.userId)
+        props.setEdit(false)
+    }
 
     return <ScrollView style={styles.container}>
         <TextInput
-            value={fullname}
+            value={fullName}
             onChangeText={(text) => setFullName(text)}
             keyboardType="default"
             placeholder="Введіть ім'я"
@@ -131,7 +142,7 @@ export const ProfileForm = (props: PropsType) => {
             style={styles.inputText}
         />
 
-        <Button title="Зберегти" onPress={() => props.setEdit(false)} />
+        <Button title="Зберегти" onPress={updateProfile} />
         <Button title="Відмінити" onPress={() => props.setEdit(false)} />
 
     </ScrollView>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { View, Text, StyleSheet, Image } from "react-native"
 import { connect } from "react-redux"
-import { getProfile, getStatus } from "../../redux/profileReducer"
+import { getProfile, getStatus, updateProfile } from "../../redux/profileReducer"
 import { AppStateType } from "../../redux/redux-store"
 import { ProfileDataType } from "../../ts/profile"
 import { getCorrectMediaUrl } from "../../utils/commonFunctions"
@@ -16,6 +16,7 @@ type PropsType = {
 
     getProfile: (userId: string) => void
     getStatus: (userId: string) => void
+    updateProfile: (data: UpdateProfileDataType, userId: string) => void
     route: any
 }
 
@@ -61,7 +62,7 @@ const Profile = (props: PropsType) => {
         }
 
         {isEdit
-            ? <ProfileForm setEdit={setEdit} authProfileData={props.route?.params?.authProfile} />
+            ? <ProfileForm setEdit={setEdit} authProfileData={props.authProfileData} updateProfile={props.updateProfile} />
             : <ProfileInfo authId={authId} userId={userId} authProfileData={authProfileData}
                 profileData={profileData} setEdit={setEdit} />
         }
@@ -92,5 +93,5 @@ const mapStateToProps = (state: AppStateType) => ({
 })
 
 export default connect(mapStateToProps, {
-  getProfile, getStatus
+  getProfile, getStatus, updateProfile
 })(Profile);
