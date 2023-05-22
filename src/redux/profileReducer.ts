@@ -79,11 +79,14 @@ export const getStatus = (userId: string) => async (dispatch: DispatchType) => {
         }
     }
 }
-export const updateStatus = (status: string | null) => async (dispatch: DispatchType) => {
+export const updateStatus = (status: string | null, userId: string) => async (dispatch: DispatchType) => {
     try {
         const res = await profileAPI.updateStatus(status)
         if (res.data.resultCode === 0) {
-            console.log('cool updated status')
+            // @ts-ignore
+            dispatch(authMe())
+            // @ts-ignore
+            dispatch(getProfile(userId))
             dispatch(profileActions.setProfileError(null))
         }
     } catch (err: any) {

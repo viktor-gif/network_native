@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { View, Text, StyleSheet, Image } from "react-native"
 import { connect } from "react-redux"
-import { getProfile, getStatus, updateProfile } from "../../redux/profileReducer"
+import { getProfile, getStatus, updateProfile, updateStatus } from "../../redux/profileReducer"
 import { AppStateType } from "../../redux/redux-store"
 import { ProfileDataType } from "../../ts/profile"
 import { getCorrectMediaUrl } from "../../utils/commonFunctions"
 import { ProfileForm } from "./profileForm"
 import { ProfileInfo } from "./profileInfo"
+import { ProfileStatus } from "./profileStatus"
 
 type PropsType = {
     authId: string | undefined
@@ -17,13 +18,12 @@ type PropsType = {
     getProfile: (userId: string) => void
     getStatus: (userId: string) => void
     updateProfile: (data: UpdateProfileDataType, userId: string) => void
+    updateStatus: (status: string | null, userId: string) => void
     route: any
 }
 
 const Profile = (props: PropsType) => {
     const [isEdit, setEdit] = useState(false)
-
-    
 
     const userId = props.route?.params?.userId
     const authId = props.authId
@@ -48,7 +48,12 @@ const Profile = (props: PropsType) => {
     const imgUrl = isAuthProfile ? authProfileData?.photos.small : profileData?.photos.small
 
     return <View style={styles.container}>
-        <Text>{props.userStatus ? props.userStatus : '------------'}</Text>
+
+        <ProfileStatus userId={userId} authId={authId}
+            userStatus={props.userStatus} getStatus={props.getStatus}
+            updateStatus={props.updateStatus}
+        />
+        
         {(imgUrl)
             ? <Image
                 alt="AWSOME"
@@ -77,11 +82,19 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         paddingRight: 20,
-        paddingLeft: 20
+        paddingLeft: 20,
+        gap: 20
     },
     ava: {
         width: 200,
         height: 200
+    },
+    profileDialogWindow: {
+        position: 'absolute',
+        left: '55%',
+        top: '20%',
+        zIndex: 1000,
+        transform: [{translateX: -150}],
     }
 })
 
@@ -93,5 +106,5 @@ const mapStateToProps = (state: AppStateType) => ({
 })
 
 export default connect(mapStateToProps, {
-  getProfile, getStatus, updateProfile
+  getProfile, getStatus, updateProfile, updateStatus
 })(Profile);
