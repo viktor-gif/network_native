@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { View, Text, StyleSheet, Image } from "react-native"
+import { View, StyleSheet } from "react-native"
 import { connect } from "react-redux"
 import { getProfile, getStatus, updateProfile, updateStatus } from "../../redux/profileReducer"
 import { AppStateType } from "../../redux/redux-store"
 import { ProfileDataType } from "../../ts/profile"
-import { getCorrectMediaUrl } from "../../utils/commonFunctions"
+import { ProfileAvatar } from "./profileAvatar"
 import { ProfileForm } from "./profileForm"
 import { ProfileInfo } from "./profileInfo"
 import { ProfileStatus } from "./profileStatus"
@@ -54,17 +54,7 @@ const Profile = (props: PropsType) => {
             updateStatus={props.updateStatus}
         />
         
-        {(imgUrl)
-            ? <Image
-                alt="AWSOME"
-                style={styles.ava}
-                source={{ uri: getCorrectMediaUrl(imgUrl) }}
-            />
-            : <Image
-                style={styles.ava}
-                source={require('../../img/ava_male.jpeg')}
-            />
-        }
+        <ProfileAvatar userId={userId} authId={authId} imgUrl={imgUrl} />
 
         {isEdit
             ? <ProfileForm setEdit={setEdit} authProfileData={props.authProfileData} updateProfile={props.updateProfile} />
